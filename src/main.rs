@@ -121,7 +121,6 @@ impl Ui {
     }
 
     fn label_fixed_width(&mut self, text: &str, width: i32, pair: i16) {
-        // TODO(#17): Ui::label_fixed_width() does not elide the text when width < text.len()
         let layout = self
             .layouts
             .last_mut()
@@ -136,7 +135,6 @@ impl Ui {
         layout.add_widget(Vec2::new(width, 1));
     }
 
-    // TODO(#26): Ui::edit_field does not scroll according to the cursor
     fn edit_field(&mut self, buffer: &mut String, cursor: &mut usize, width: i32) {
         let layout = self
             .layouts
@@ -158,17 +156,17 @@ impl Ui {
                     }
                     *cursor += 1;
                 }
-                constants::KEY_LEFT => {
+                KEY_LEFT => {
                     if *cursor > 0 {
                         *cursor -= 1
                     }
                 }
-                constants::KEY_RIGHT => {
+                KEY_RIGHT => {
                     if *cursor < buffer.len() {
                         *cursor += 1;
                     }
                 }
-                constants::KEY_BACKSPACE => {
+                KEY_BACKSPACE => {
                     if *cursor > 0 {
                         *cursor -= 1;
                         if *cursor < buffer.len() {
@@ -176,7 +174,7 @@ impl Ui {
                         }
                     }
                 }
-                constants::KEY_DC => {
+                KEY_DC => {
                     if *cursor < buffer.len() {
                         buffer.remove(*cursor);
                     }
@@ -327,13 +325,6 @@ fn save_state(todos: &[String], dones: &[String], file_path: &str) {
     }
 }
 
-// TODO(#2): add new items to TODO
-// TODO(#3): delete items
-// TODO(#4): edit the items
-// TODO(#5): keep track of date when the item was DONE
-// TODO(#6): undo system
-// TODO(#12): save the state on SIGINT
-
 fn main() {
     ctrlc::init();
 
@@ -404,7 +395,6 @@ fn main() {
                 {
                     if panel == Status::Todo {
                         ui.label_fixed_width("TODO", x / 2, HIGHLIGHT_PAIR);
-                        // TODO(#27): the item lists don't have a scroll area
                         for (index, todo) in todos.iter_mut().enumerate() {
                             if index == todo_curr {
                                 if editing {
